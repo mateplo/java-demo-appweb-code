@@ -4,9 +4,9 @@ name: security
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main, dev]
   push:
-    branches: [main, develop]
+    branches: [main, dev]
   schedule:
     - cron: "0 4 * * 1"   # lundis 04:00 UTC
 
