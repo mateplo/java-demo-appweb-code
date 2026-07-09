@@ -36,6 +36,25 @@
       <artifactId>jsp-api</artifactId>
       <scope>provided</scope>
     </dependency>
+
+    <!-- Métriques Prometheus. On reste sur la ligne 0.16.x du client Java : c'est la
+         dernière basée sur javax.servlet, donc compatible Tomcat 9 / Servlet 2.5.
+         (Les versions 1.x sont passées à jakarta.servlet -> incompatibles ici.) -->
+    <dependency>
+      <groupId>io.prometheus</groupId>
+      <artifactId>simpleclient</artifactId>
+      <version>0.16.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.prometheus</groupId>
+      <artifactId>simpleclient_hotspot</artifactId>
+      <version>0.16.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.prometheus</groupId>
+      <artifactId>simpleclient_servlet</artifactId>
+      <version>0.16.0</version>
+    </dependency>
   </dependencies>
 
 </project>

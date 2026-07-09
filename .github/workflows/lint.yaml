@@ -1,0 +1,42 @@
+# Lint / gate de PR. Uniquement sur PR : le trigger pull_request teste déjà le code du
+# MERGE (PR + base), donc rejouer après le push serait redondant. Le gate se fait ici,
+# avant merge.
+name: lint
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # --- Lint du Dockerfile ---
+  hadolint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile:
+          - Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+
+  # --- Compilation + tests Maven (le vrai gate côté code Java) ---
+  # Projet multi-module (server + webapp). `mvn verify` compile tous les modules et
+  # exécute les tests JUnit (surefire). C'est ce qui remplace l'ancien lint TS/Node.
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "11"   # aligné sur maven.compiler.source du pom
+          cache: maven
+      - name: Build & test
+        # -B : mode batch (pas de couleurs/progress) ; -ntp : masque le spam de download.
+        run: mvn -B -ntp verify
