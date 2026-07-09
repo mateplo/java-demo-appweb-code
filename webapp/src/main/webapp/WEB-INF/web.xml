@@ -22,4 +22,30 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
+  <!-- Métriques Prometheus -->
+  <!-- Au démarrage : enregistre les collecteurs JVM (heap, GC, threads, CPU...). -->
+  <listener>
+    <listener-class>com.devops.MetricsInitializer</listener-class>
+  </listener>
+
+  <!-- Compteur applicatif app_http_requests_total : incrémenté à chaque requête. -->
+  <filter>
+    <filter-name>metrics-counter</filter-name>
+    <filter-class>com.devops.MetricsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>metrics-counter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Endpoint /metrics scrapé par Prometheus (ServiceMonitor -> port http 8080). -->
+  <servlet>
+    <servlet-name>metrics</servlet-name>
+    <servlet-class>io.prometheus.client.exporter.MetricsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>metrics</servlet-name>
+    <url-pattern>/metrics</url-pattern>
+  </servlet-mapping>
+
 </web-app>
