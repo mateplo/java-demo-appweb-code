@@ -18,6 +18,18 @@
 
   <build>
     <finalName>webapp</finalName>
+    <plugins>
+      <!-- Filtre WEB-INF/web.xml au packaging : les placeholders ${...} (ex.
+           ${project.version}) y sont résolus. Rend le context-param app.version
+           dynamique, aligné sur la version réelle du projet Maven. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>

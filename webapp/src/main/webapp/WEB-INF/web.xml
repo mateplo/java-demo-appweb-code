@@ -8,9 +8,10 @@
   <display-name>Webapp Java</display-name>
   <description>Application demo</description>
 
+  <!-- Résolu au packaging par le war-plugin (filteringDeploymentDescriptors). -->
   <context-param>
     <param-name>app.version</param-name>
-    <param-value>1.0.0</param-value>
+    <param-value>${project.version}</param-value>
   </context-param>
 
   <context-param>
