@@ -51,6 +51,12 @@ jobs:
         with:
           context: ${{ matrix.context }}
           push: true
+          # Métadonnées injectées dans l'image -> lues par la webapp au runtime.
+          #   IMAGE_TAG    = tag immuable <branche>-<sha7> (identifie l'image déployée)
+          #   BUILD_NUMBER = numéro du run GitHub Actions (traçabilité du build)
+          build-args: |
+            IMAGE_TAG=${{ github.ref_name }}-${{ env.SHORT_SHA }}
+            BUILD_NUMBER=${{ github.run_number }}
           # 2 tags. github.ref_name = la branche poussée (ici main).
           #   <branche>-<sha7>  = tag unique (traçable)
           #   <branche>         = tag mobile "dernière de la branche"
